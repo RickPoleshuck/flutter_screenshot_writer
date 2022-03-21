@@ -4,5 +4,6 @@
 
 # Conventional directory for build output.
 build/
+/.idea/workspace.xml
 /bin/flutter_screenshot_writer.exe
 /.idea/

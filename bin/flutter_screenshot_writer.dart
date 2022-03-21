@@ -40,7 +40,7 @@ void saveScreen(dynamic msg) async {
   String name = msg['name'];
   name = name.endsWith('.png') ? name : '$name.png';
   List<int> image = msg['image'].cast<int>();
-  File f = File('$outputDir/$name');
+  File f = File('${outputDir.path}/$name');
   if (verbose) {
     print('Saving screen to: ${f.path}');
   }

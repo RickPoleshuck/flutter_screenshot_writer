@@ -11,7 +11,7 @@ void main(List<String> argv) async {
   late int portNo;
   final argParser = ArgParser(allowTrailingOptions: false);
   argParser.addOption('port', abbr: 'p', defaultsTo: '3013', help: 'port to listen on');
-  argParser.addOption('output_dir', abbr: 'o', defaultsTo: Directory.current.path, help: 'Output directory');
+  argParser.addOption('output_dir', abbr: 'o', defaultsTo: '${Directory.current.path}/screenshots', help: 'Output directory');
   argParser.addFlag('verbose', abbr: 'v', defaultsTo: true, help: 'verbose');
   final args = argParser.parse(argv);
   try {
@@ -28,7 +28,9 @@ void main(List<String> argv) async {
   verbose = args['verbose'];
 
   final server = await ServerSocket.bind(InternetAddress.loopbackIPv4, portNo);
-
+  if (verbose) {
+    print('Listening on port: $portNo, saving screenshots to: ${outputDir.path}');
+  }
   server.listen((client) {
     handleConnection(client);
   });
@@ -40,7 +42,7 @@ void saveScreen(dynamic msg) async {
     print('Saving screen to: $path');
   }
   List<int> image = msg['image'].cast<int>();
-  File f = File(path);
+  File f = File('$outputDir/$path');
   f.parent.createSync(recursive: true);
   f.writeAsBytesSync(image);
 }

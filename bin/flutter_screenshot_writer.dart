@@ -26,10 +26,18 @@ void main(List<String> argv) async {
     exit(1);
   }
   verbose = args['verbose'];
-
+  outputDir.create(recursive: true);
   final server = await ServerSocket.bind(InternetAddress.loopbackIPv4, portNo);
   if (verbose) {
-    print('Listening on port: $portNo, saving screenshots to: ${outputDir.path}');
+    print('''
+Listening on port: $portNo, saving screenshots to: ${outputDir.path}');
+
+Use this code in integration test for each image:
+
+print('var msg = jsonEncode({'name': name, 'image': screenshotBytes});
+final socket = await Socket.connect('10.0.2.2', $portNo);
+socket.write(msg);');
+    ''');
   }
   server.listen((client) {
     handleConnection(client);
@@ -38,6 +46,7 @@ void main(List<String> argv) async {
 
 void saveScreen(dynamic msg) async {
   String name = msg['name'];
+  name = name.endsWith('.png') ? name : '$name.png';
   List<int> image = msg['image'].cast<int>();
   File f = File('$outputDir/$name');
   if (verbose) {

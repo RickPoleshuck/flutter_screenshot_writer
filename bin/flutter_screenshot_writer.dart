@@ -29,15 +29,7 @@ void main(List<String> argv) async {
   outputDir.create(recursive: true);
   final server = await ServerSocket.bind(InternetAddress.loopbackIPv4, portNo);
   if (verbose) {
-    print('''
-Listening on port: $portNo, saving screenshots to: ${outputDir.path}');
-
-Use this code in integration test for each image:
-
-print('var msg = jsonEncode({'name': name, 'image': screenshotBytes});
-final socket = await Socket.connect('10.0.2.2', $portNo);
-socket.write(msg);');
-    ''');
+    print('Listening on port: $portNo, saving screenshots to: ${outputDir.path}');
   }
   server.listen((client) {
     handleConnection(client);

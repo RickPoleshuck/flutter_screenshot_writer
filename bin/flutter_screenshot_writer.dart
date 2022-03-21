@@ -37,12 +37,12 @@ void main(List<String> argv) async {
 }
 
 void saveScreen(dynamic msg) async {
-  String path = msg['path'];
-  if (verbose) {
-    print('Saving screen to: $path');
-  }
+  String name = msg['name'];
   List<int> image = msg['image'].cast<int>();
-  File f = File('$outputDir/$path');
+  File f = File('$outputDir/$name');
+  if (verbose) {
+    print('Saving screen to: ${f.path}');
+  }
   f.parent.createSync(recursive: true);
   f.writeAsBytesSync(image);
 }
